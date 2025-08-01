@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主持技巧升級｜形象的藝術 - 簡報版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* 簡報樣式 */
+        body { 
+            font-family: 'Inter', 'Noto Sans TC', sans-serif; 
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: #F8FAFC; 
+            overflow: hidden;
+        }
+        
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            padding: 3rem;
+            box-sizing: border-box;
+            position: relative;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+        
+        .slide.active { display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        
+        .slide-header {
+            position: absolute;
+            top: 2rem;
+            left: 3rem;
+            right: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .slide-number {
+            background: rgba(79, 70, 229, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .slide-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #60A5FA, #A78BFA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+        
+        .slide-subtitle {
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            color: #CBD5E1;
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 800px;
+        }
+        
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+            text-align: center;
+        }
+        
+        .large-number {
+            font-size: clamp(8rem, 15vw, 12rem);
+            font-weight: 900;
+            color: #4F46E5;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(79, 70, 229, 0.5);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            margin-top: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid rgba(79, 70, 229, 0.3);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-card:hover {
+            border-color: #4F46E5;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.3);
+        }
+        
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-label {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-desc {
+            color: #94A3B8;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .image-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            margin-top: 2rem;
+        }
+        
+        .showcase-card {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .showcase-card:hover {
+            border-color: #4F46E5;
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.4);
+        }
+        
+        .showcase-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .showcase-content {
+            padding: 1.5rem;
+        }
+        
+        .showcase-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #F1F5F9;
+        }
+        
+        .showcase-desc {
+            color: #94A3B8;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 100;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .navigation:hover {
+            opacity: 1;
+        }
+        
+        .nav-btn {
+            background: rgba(15, 23, 42, 0.8);
+            color: #94A3B8;
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+            min-width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(79, 70, 229, 0.2);
+            border-color: #4F46E5;
+            color: white;
+        }
+        
+        .nav-btn:disabled {
+            background: rgba(51, 65, 85, 0.5);
+            border-color: rgba(100, 116, 139, 0.3);
+            color: rgba(148, 163, 184, 0.5);
+            cursor: not-allowed;
+        }
+        
+        .keyboard-hint {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            background: rgba(15, 23, 42, 0.8);
+            color: #94A3B8;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            opacity: 0.6;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(79, 70, 229, 0.2);
+        }
+        
+        .slide-indicator {
+            position: fixed;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+        
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(148, 163, 184, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .indicator-dot.active {
+            background: #4F46E5;
+            transform: scale(1.5);
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.6);
+        }
+        
+        .celebrity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            margin-top: 2rem;
+        }
+        
+        .celebrity-card {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .celebrity-card:hover {
+            border-color: #4F46E5;
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.3);
+        }
+        
+        .celebrity-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1.5rem auto;
+            border: 3px solid #4F46E5;
+        }
+        
+        .celebrity-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .celebrity-style {
+            color: #60A5FA;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .celebrity-desc {
+            color: #94A3B8;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .highlight-text {
+            color: #60A5FA;
+            font-weight: bold;
+        }
+        
+        .warning-icon {
+            font-size: 3rem;
+            color: #EF4444;
+            margin-bottom: 1rem;
+        }
+        
+        .success-icon {
+            font-size: 3rem;
+            color: #10B981;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide.active .slide-content > * {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .slide.active .slide-content > *:nth-child(2) { animation-delay: 0.2s; }
+        .slide.active .slide-content > *:nth-child(3) { animation-delay: 0.4s; }
+        .slide.active .slide-content > *:nth-child(4) { animation-delay: 0.6s; }
+        
+        /* 圖片放大功能 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: auto;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(79, 70, 229, 0.3);
+        }
+        
+        .modal-image {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 0.5rem;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(79, 70, 229, 0.8);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .zoomable {
+            cursor: zoom-in;
+            transition: all 0.3s ease;
+        }
+        
+        .zoomable:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        /* AI實戰區域樣式 */
+        .ai-workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+            margin-top: 2rem;
+        }
+        
+        .ai-controls {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 2px solid rgba(79, 70, 229, 0.3);
+        }
+        
+        .ai-result {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 2px solid rgba(79, 70, 229, 0.3);
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .clothing-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .clothing-item {
+            background: rgba(51, 65, 85, 0.5);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        
+        .clothing-item:hover {
+            border-color: #4F46E5;
+            transform: scale(1.05);
+        }
+        
+        .clothing-item.selected {
+            border-color: #4F46E5;
+            background: rgba(79, 70, 229, 0.2);
+        }
+        
+        .clothing-item img {
+            width: 100%;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .toggle-btn {
+            background: rgba(51, 65, 85, 0.5);
+            color: #94A3B8;
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+        }
+        
+        .toggle-btn.active {
+            background: rgba(79, 70, 229, 0.8);
+            color: white;
+            border-color: #4F46E5;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            color: #94A3B8;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-input, .form-select {
+            width: 100%;
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            color: white;
+            font-size: 0.875rem;
+        }
+        
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #4F46E5;
+        }
+        
+        .generate-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #4F46E5, #7C3AED);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        .loader {
+            border: 4px solid rgba(79, 70, 229, 0.3);
+            border-top: 4px solid #4F46E5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .slide { padding: 2rem 1rem; }
+            .slide-header { left: 1rem; right: 1rem; top: 1rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .image-showcase { grid-template-columns: 1fr; }
+            .celebrity-grid { grid-template-columns: 1fr; }
+            .navigation { bottom: 1rem; }
+            .slide-indicator { right: 1rem; }
+            .ai-workspace { grid-template-columns: 1fr; }
+            .clothing-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 投影片指示器 -->
+    <div class="slide-indicator" id="slideIndicator"></div>
+    
+    <!-- 投影片 1: 標題頁 -->
+    <div class="slide active" data-slide="1">
+        <div class="slide-header">
+            <div class="slide-number">1 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">主持技巧升級系列</div>
+        </div>
+        <div class="slide-content">
+            <h1 class="slide-title">主持技巧升級</h1>
+            <h2 class="slide-subtitle" style="font-size: 2.5rem; margin-bottom: 1rem;">形象的藝術</h2>
+            <p class="slide-subtitle">你的專業形象，決定觀眾對你的第一印象</p>
+            <div style="margin-top: 3rem; font-size: 1.2rem; color: #94A3B8;">
+                ✨ 打造專業主持人形象的完整指南
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 2: 7秒定律 -->
+    <div class="slide" data-slide="2">
+        <div class="slide-header">
+            <div class="slide-number">2 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">第一印象的重要性</div>
+        </div>
+        <div class="slide-content">
+            <div class="large-number">7</div>
+            <h2 class="slide-title">觀眾在 7 秒內<br>決定你專不專業</h2>
+            <p class="slide-subtitle">你說得再好，觀眾第一眼還是先看你穿什麼</p>
+            
+            <!-- 研究數據支持 -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; width: 100%; margin-top: 3rem;">
+                <div style="background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(79, 70, 229, 0.3); border-radius: 1rem; padding: 1.5rem;">
+                    <h3 style="color: #60A5FA; font-size: 1.1rem; margin-bottom: 0.8rem;">Psychology Today 研究</h3>
+                    <p style="color: #94A3B8; font-size: 0.9rem;">外表佔第一印象 <span style="color: #60A5FA; font-size: 1.8rem; font-weight: bold;">55%</span></p>
+                </div>
+                <div style="background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(239, 68, 68, 0.3); border-radius: 1rem; padding: 1.5rem;">
+                    <h3 style="color: #F87171; font-size: 1.1rem; margin-bottom: 0.8rem;">哈佛商學院研究</h3>
+                    <p style="color: #94A3B8; font-size: 0.9rem;"><span style="color: #F87171; font-weight: bold;">整體形象不協調會導致信任感下降</span></p>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; width: 100%; margin-top: 1.5rem;">
+                <div style="background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(251, 191, 36, 0.3); border-radius: 1rem; padding: 1.5rem;">
+                    <h3 style="color: #FBBF24; font-size: 1.1rem; margin-bottom: 0.8rem;">服裝風格重要性</h3>
+                    <p style="color: #94A3B8; font-size: 0.9rem;">衣著風格與語言不一致 → <span style="color: #FBBF24; font-weight: bold;">減分效果加倍</span></p>
+                </div>
+                <div style="background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(34, 197, 94, 0.3); border-radius: 1rem; padding: 1.5rem;">
+                    <h3 style="color: #22C55E; font-size: 1.1rem; margin-bottom: 0.8rem;">Instagram 與節目曝光分析</h3>
+                    <p style="color: #94A3B8; font-size: 0.9rem;"><span style="color: #22C55E; font-weight: bold;">圖像吸引力 > 語言內容</span></p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; padding: 2rem; background: rgba(147, 51, 234, 0.1); border-radius: 1rem; border: 2px solid #9333EA;">
+                <h3 style="color: #A855F7; font-size: 1.2rem; margin-bottom: 1rem;">🎯 造型記憶點</h3>
+                <p style="color: #94A3B8; font-size: 1.1rem;">主持照一出圈，多數人記得的是「<span style="color: #A855F7; font-weight: bold;">造型</span>」</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 3: 麥拉賓法則介紹 -->
+    <div class="slide" data-slide="3">
+        <div class="slide-header">
+            <div class="slide-number">3 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">理論基礎</div>
+        </div>
+        <div class="slide-content">
+            <h2 class="slide-title">溝通的秘密</h2>
+            <h3 class="slide-subtitle">麥拉賓法則 (Mehrabian's Rule)</h3>
+            <p style="font-size: 1.4rem; color: #CBD5E1; max-width: 800px; line-height: 1.6;">
+                心理學家阿爾伯特·麥拉賓研究發現，<br>
+                人們在面對面溝通時，<span class="highlight-text">第一印象的形成</span>並非主要來自言語內容
+            </p>
+            <div style="margin-top: 3rem; font-size: 1.2rem; color: #60A5FA;">
+                → 接下來讓我們看看具體的比例分配
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 4: 麥拉賓法則 - 視覺 55% -->
+    <div class="slide" data-slide="4">
+        <div class="slide-header">
+            <div class="slide-number">4 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">麥拉賓法則 - 視覺</div>
+        </div>
+        <div class="slide-content">
+            <div class="stat-number" style="color: #60A5FA; font-size: 8rem;">55%</div>
+            <h2 class="slide-title" style="color: #60A5FA;">VISUAL 視覺</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; width: 100%; margin-top: 2rem;">
+                <div class="stat-card">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">👔</div>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">外表穿著</h4>
+                    <p style="color: #94A3B8;">服裝搭配與整體造型</p>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">😊</div>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">表情神態</h4>
+                    <p style="color: #94A3B8;">面部表情與眼神接觸</p>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🤝</div>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">肢體語言</h4>
+                    <p style="color: #94A3B8;">姿態、手勢與儀態</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 5: 麥拉賓法則 - 聽覺 38% -->
+    <div class="slide" data-slide="5">
+        <div class="slide-header">
+            <div class="slide-number">5 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">麥拉賓法則 - 聽覺</div>
+        </div>
+        <div class="slide-content">
+            <div class="stat-number" style="color: #14B8A6; font-size: 8rem;">38%</div>
+            <h2 class="slide-title" style="color: #14B8A6;">VOCAL 聽覺</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; width: 100%; margin-top: 2rem;">
+                <div class="stat-card">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🎵</div>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">音質音色</h4>
+                    <p style="color: #94A3B8;">聲音的質感與特色</p>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">⚡</div>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">語調節奏</h4>
+                    <p style="color: #94A3B8;">說話速度與抑揚頓挫</p>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🔊</div>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">音量控制</h4>
+                    <p style="color: #94A3B8;">適當的音量與清晰度</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 6: 麥拉賓法則 - 言語 7% -->
+    <div class="slide" data-slide="6">
+        <div class="slide-header">
+            <div class="slide-number">6 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">麥拉賓法則 - 言語</div>
+        </div>
+        <div class="slide-content">
+            <div class="stat-number" style="color: #F43F5E; font-size: 8rem;">7%</div>
+            <h2 class="slide-title" style="color: #F43F5E;">VERBAL 言語</h2>
+            <p class="slide-subtitle">是的，你說了「什麼」只佔了這麼少</p>
+            <div class="stat-card" style="margin-top: 2rem; max-width: 600px;">
+                <div style="font-size: 2rem; margin-bottom: 1rem;">💬</div>
+                <h4 style="font-size: 1.4rem; margin-bottom: 1rem;">內容與言詞的意義</h4>
+                <p style="color: #94A3B8; font-size: 1.1rem; line-height: 1.6;">
+                    雖然只佔 7%，但這 7% 必須<span class="highlight-text">精準有力</span><br>
+                    內容是基礎，但形象和聲音決定觀眾是否願意聽
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 7: 穿搭禁區總覽 -->
+    <div class="slide" data-slide="7">
+        <div class="slide-header">
+            <div class="slide-number">7 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">穿搭指南</div>
+        </div>
+        <div class="slide-content">
+            <div class="warning-icon">⚠️</div>
+            <h2 class="slide-title">主持穿搭三大禁區</h2>
+            <p class="slide-subtitle">避開這些地雷，你就成功了一半</p>
+            <div class="stats-grid">
+                <div class="stat-card" style="border-color: #EF4444;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🏠</div>
+                    <h3 style="color: #EF4444; font-size: 1.5rem;">太隨性</h3>
+                    <p style="color: #94A3B8;">把舞台當自己家</p>
+                </div>
+                <div class="stat-card" style="border-color: #EF4444;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">✨</div>
+                    <h3 style="color: #EF4444; font-size: 1.5rem;">太浮誇</h3>
+                    <p style="color: #94A3B8;">人比舞台亮</p>
+                </div>
+                <div class="stat-card" style="border-color: #EF4444;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">👔</div>
+                    <h3 style="color: #EF4444; font-size: 1.5rem;">不合身</h3>
+                    <p style="color: #94A3B8;">衣服像偷穿爸爸的</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 8: NG案例 - 太隨性 -->
+    <div class="slide" data-slide="8">
+        <div class="slide-header">
+            <div class="slide-number">8 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">禁區一：太隨性</div>
+        </div>
+        <div class="slide-content">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; width: 100%;">
+                <div>
+                    <img src="images/ng-too-casual.png" alt="太隨性的穿搭範例" class="zoomable" style="width: 100%; height: 400px; object-fit: cover; border-radius: 1rem; border: 3px solid #EF4444;">
+                </div>
+                <div style="text-align: left;">
+                    <h2 style="font-size: 2.5rem; color: #EF4444; margin-bottom: 1rem;">✖ 太隨性</h2>
+                    <div style="font-size: 1.3rem; line-height: 1.8; color: #CBD5E1;">
+                        <p style="margin-bottom: 1.5rem;">
+                            <span class="highlight-text">問題：</span>穿得像去樓下買晚餐
+                        </p>
+                        <p style="margin-bottom: 1.5rem;">
+                            <span class="highlight-text">影響：</span>讓觀眾覺得你不尊重這個場合
+                        </p>
+                        <p style="margin-bottom: 1.5rem;">
+                            <span class="highlight-text">建議：</span>即使輕鬆場合也要保持基本整潔與得體
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 9: NG案例 - 太浮誇 -->
+    <div class="slide" data-slide="9">
+        <div class="slide-header">
+            <div class="slide-number">9 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">禁區二：太浮誇</div>
+        </div>
+        <div class="slide-content">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; width: 100%;">
+                <div>
+                    <img src="images/ng-too-flashy.png" alt="太浮誇的穿搭範例" class="zoomable" style="width: 100%; height: 400px; object-fit: cover; border-radius: 1rem; border: 3px solid #EF4444;">
+                </div>
+                <div style="text-align: left;">
+                    <h2 style="font-size: 2.5rem; color: #EF4444; margin-bottom: 1rem;">✖ 太浮誇</h2>
+                    <div style="font-size: 1.3rem; line-height: 1.8; color: #CBD5E1;">
+                        <p style="margin-bottom: 1.5rem;">
+                            <span class="highlight-text">問題：</span>衫比人搶鏡
+                        </p>
+                        <p style="margin-bottom: 1.5rem;">
+                            <span class="highlight-text">影響：</span>過度裝飾會模糊焦點
+                        </p>
+                        <p style="margin-bottom: 1.5rem;">
+                            <span class="highlight-text">提醒：</span>主持人是綠葉，不是紅花
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 10: NG案例 - 不合身 -->
+    <div class="slide" data-slide="10">
+        <div class="slide-header">
+            <div class="slide-number">10 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">禁區三：不合身</div>
+        </div>
+        <div class="slide-content">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; width: 100%;">
+                <div>
+                    <img src="images/ng-ill-fitting.png" alt="不合身的穿搭範例" class="zoomable" style="width: 100%; height: 400px; object-fit: cover; border-radius: 1rem; border: 3px solid #EF4444;">
+                </div>
+                <div style="text-align: left;">
+                    <h2 style="font-size: 2.5rem; color: #EF4444; margin-bottom: 1rem;">✖ 不合身</h2>
+                    <div style="font-size: 1.3rem; line-height: 1.8; color: #CBD5E1;">
+                        <p style="margin-bottom: 1.5rem;">
+                            <span class="highlight-text">問題：</span>過鬆顯邋遢，過緊束縛動作
+                        </p>
+                        <p style="margin-bottom: 1.5rem;">
+                            <span class="highlight-text">影響：</span>蓋住肢體語言，顯得沒精神
+                        </p>
+                        <p style="margin-bottom: 1.5rem;">
+                            <span class="highlight-text">解決：</span>合身剪裁讓你看起來更挺拔有自信
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 11: 男女NG細節 -->
+    <div class="slide" data-slide="11">
+        <div class="slide-header">
+            <div class="slide-number">11 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">細節決定成敗</div>
+        </div>
+        <div class="slide-content">
+            <h2 class="slide-title">男女主持 NG 細節</h2>
+            <p class="slide-subtitle">魔鬼藏在細節裡</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; width: 100%; margin-top: 2rem;">
+                <div>
+                    <h3 style="font-size: 2rem; color: #F472B6; margin-bottom: 2rem; text-align: center;">女主持常見NG</h3>
+                    <div class="stat-card">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">💍</div>
+                        <h4 style="color: #EF4444;">過多配件</h4>
+                        <p style="color: #94A3B8;">項鍊、耳環、手環全上容易顯得雜亂</p>
+                    </div>
+                    <div class="stat-card" style="margin-top: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">💄</div>
+                        <h4 style="color: #EF4444;">妝容不耐久</h4>
+                        <p style="color: #94A3B8;">舞台燈光容易讓妝容融化</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="font-size: 2rem; color: #60A5FA; margin-bottom: 2rem; text-align: center;">男主持常見NG</h3>
+                    <div class="stat-card">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">👔</div>
+                        <h4 style="color: #EF4444;">西裝不合身</h4>
+                        <p style="color: #94A3B8;">肩線、袖長、褲長是關鍵</p>
+                    </div>
+                    <div class="stat-card" style="margin-top: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">👔</div>
+                        <h4 style="color: #EF4444;">領帶歪斜</h4>
+                        <p style="color: #94A3B8;">長度應剛好及於皮帶扣</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 12: 女主持NG細節詳解 -->
+    <div class="slide" data-slide="12">
+        <div class="slide-header">
+            <div class="slide-number">12 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">女主持NG細節</div>
+        </div>
+        <div class="slide-content">
+            <h2 class="slide-title">女主持常見NG詳解</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; width: 100%; margin-top: 2rem;">
+                <div class="stat-card" style="border-color: #EF4444;">
+                    <img src="images/ng-female-accessories.jpg" alt="過多配件示意圖" class="zoomable" style="width: 100%; height: 150px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                    <h3 style="color: #EF4444; font-size: 1.3rem;">過多配件</h3>
+                    <p style="color: #94A3B8; font-size: 1rem; line-height: 1.5;">項鍊、耳環、手環全上，容易顯得雜亂。選擇一兩件重點飾品即可。</p>
+                </div>
+                <div class="stat-card" style="border-color: #EF4444;">
+                    <img src="images/ng-female-makeup.jpg" alt="妝容不耐久示意圖" class="zoomable" style="width: 100%; height: 150px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                    <h3 style="color: #EF4444; font-size: 1.3rem;">妝容不耐久</h3>
+                    <p style="color: #94A3B8; font-size: 1rem; line-height: 1.5;">舞台燈光容易讓妝容融化，選擇持久、控油的彩妝品非常重要。</p>
+                </div>
+                <div class="stat-card" style="border-color: #EF4444;">
+                    <img src="images/ng-female-skirt.jpg" alt="裙子過短示意圖" class="zoomable" style="width: 100%; height: 150px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                    <h3 style="color: #EF4444; font-size: 1.3rem;">裙子過短</h3>
+                    <p style="color: #94A3B8; font-size: 1rem; line-height: 1.5;">過短的裙子在走動或坐下時可能造成不便與尷尬，影響專業形象。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 13: 男主持NG細節詳解 -->
+    <div class="slide" data-slide="13">
+        <div class="slide-header">
+            <div class="slide-number">13 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">男主持NG細節</div>
+        </div>
+        <div class="slide-content">
+            <h2 class="slide-title">男主持常見NG詳解</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; width: 100%; margin-top: 2rem;">
+                <div class="stat-card" style="border-color: #EF4444;">
+                    <img src="images/ng-male-suit-unfit.jpg" alt="西裝不合身示意圖" class="zoomable" style="width: 100%; height: 150px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                    <h3 style="color: #EF4444; font-size: 1.3rem;">西裝不合身</h3>
+                    <p style="color: #94A3B8; font-size: 1rem; line-height: 1.5;">肩線、袖長、褲長是關鍵。不合身的西裝會讓你像臨時借來的。</p>
+                </div>
+                <div class="stat-card" style="border-color: #EF4444;">
+                    <img src="images/ng-male-tie-wrong.jpg" alt="領帶歪斜或過長示意圖" class="zoomable" style="width: 100%; height: 150px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                    <h3 style="color: #EF4444; font-size: 1.3rem;">領帶歪斜或過長</h3>
+                    <p style="color: #94A3B8; font-size: 1rem; line-height: 1.5;">領帶的長度應剛好及於皮帶扣，並隨時保持置中，這是專業的體現。</p>
+                </div>
+                <div class="stat-card" style="border-color: #EF4444;">
+                    <img src="images/ng-male-fabric-heavy.jpg" alt="材質太過厚重示意圖" class="zoomable" style="width: 100%; height: 150px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                    <h3 style="color: #EF4444; font-size: 1.3rem;">材質太過厚重</h3>
+                    <p style="color: #94A3B8; font-size: 1rem; line-height: 1.5;">若非冬季或極正式場合，厚重的毛呢西裝會讓你滿頭大汗，顯得狼狽。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 14: 專業穿搭三關鍵 -->
+    <div class="slide" data-slide="14">
+        <div class="slide-header">
+            <div class="slide-number">14 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">專業指南</div>
+        </div>
+        <div class="slide-content">
+            <div class="success-icon">✅</div>
+            <h2 class="slide-title">如何穿出專業？</h2>
+            <p class="slide-subtitle">掌握三大關鍵，打造你的主持風格</p>
+            <div class="stats-grid">
+                <div class="stat-card" style="border-color: #10B981;">
+                    <img src="images/pro-tip-occasion.jpg" alt="場合適宜" class="zoomable" style="width: 100%; height: 150px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                    <h3 style="color: #10B981; font-size: 1.5rem;">關鍵一：場合</h3>
+                    <p style="color: #94A3B8;">了解場合的正式程度與風格</p>
+                </div>
+                <div class="stat-card" style="border-color: #10B981;">
+                    <img src="images/pro-tip-body-shape.jpg" alt="修飾身形" class="zoomable" style="width: 100%; height: 150px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                    <h3 style="color: #10B981; font-size: 1.5rem;">關鍵二：身形</h3>
+                    <p style="color: #94A3B8;">選擇能凸顯優點的剪裁</p>
+                </div>
+                <div class="stat-card" style="border-color: #10B981;">
+                    <img src="images/pro-tip-style.jpg" alt="個人風格" class="zoomable" style="width: 100%; height: 150px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                    <h3 style="color: #10B981; font-size: 1.5rem;">關鍵三：風格</h3>
+                    <p style="color: #94A3B8;">在專業基礎上加入個人特色</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 15: 風格典範 -->
+    <div class="slide" data-slide="15">
+        <div class="slide-header">
+            <div class="slide-number">15 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">學習典範</div>
+        </div>
+        <div class="slide-content">
+            <h2 class="slide-title">風格典範：向大師學習</h2>
+            <p class="slide-subtitle">從知名主持人的穿搭中，找到你的靈感</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; width: 100%; margin-top: 2rem;">
+                <div class="celebrity-card">
+                    <img src="images/celeb-jacky-wu.jpg" alt="吳宗憲" class="celebrity-image zoomable">
+                    <div class="celebrity-name">吳宗憲</div>
+                    <div class="celebrity-style">綜藝型幽默</div>
+                    <div class="celebrity-desc">色彩強烈、休閒混正式，完美契合綜藝天王形象</div>
+                </div>
+                <div class="celebrity-card">
+                    <img src="images/celeb-momoko-tao.jpg" alt="陶晶瑩" class="celebrity-image zoomable">
+                    <div class="celebrity-name">陶晶瑩</div>
+                    <div class="celebrity-style">都會理性 + 情感</div>
+                    <div class="celebrity-desc">剪裁俐落的單色套裝，展現都會女性的專業與情感深度</div>
+                </div>
+                <div class="celebrity-card">
+                    <img src="images/celeb-bowie-tsang.jpg" alt="曾寶儀" class="celebrity-image zoomable">
+                    <div class="celebrity-name">曾寶儀</div>
+                    <div class="celebrity-style">知性文藝</div>
+                    <div class="celebrity-desc">簡約有質感的服飾，清新自然的妝容</div>
+                </div>
+                <div class="celebrity-card">
+                    <img src="images/celeb-sandy-wu.jpg" alt="吳姍儒" class="celebrity-image zoomable">
+                    <div class="celebrity-name">吳姍儒</div>
+                    <div class="celebrity-style">甜美親民</div>
+                    <div class="celebrity-desc">明亮色系洋裝或套裝，適合活動或婚禮等歡快場合</div>
+                </div>
+                <div class="celebrity-card">
+                    <img src="images/celeb-nana-ouyang.jpg" alt="歐陽娜娜" class="celebrity-image zoomable">
+                    <div class="celebrity-name">歐陽娜娜</div>
+                    <div class="celebrity-style">新生代輕時尚</div>
+                    <div class="celebrity-desc">簡潔具設計感的輕時尚風格，適合年輕族群活動</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 16: AI實戰演練 -->
+    <div class="slide" data-slide="16">
+        <div class="slide-header">
+            <div class="slide-number">16 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">實戰演練</div>
+        </div>
+        <div class="slide-content">
+            <h2 class="slide-title">AI 實戰演練</h2>
+            <p class="slide-subtitle">打造你的專屬造型</p>
+            <div class="ai-workspace">
+                <!-- 左側控制區 -->
+                <div class="ai-controls">
+                    <h3 style="color: #60A5FA; font-size: 1.2rem; margin-bottom: 1rem;">1. 設定模特兒參數</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="form-group">
+                            <label class="form-label">性別</label>
+                            <select id="gender-select" class="form-select">
+                                <option value="female">女性</option>
+                                <option value="male">男性</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">身高 (cm)</label>
+                            <input type="number" id="height-input" value="170" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">體重 (kg)</label>
+                            <input type="number" id="weight-input" value="60" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <h3 style="color: #60A5FA; font-size: 1.2rem; margin-bottom: 1rem;">2. 選擇服飾</h3>
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <button id="tops-toggle" class="toggle-btn active">上衣</button>
+                        <button id="bottoms-toggle" class="toggle-btn">下著</button>
+                    </div>
+                    
+                    <!-- 上衣選項 -->
+                    <div id="tops-options" class="clothing-grid">
+                        <!-- 動態生成 -->
+                    </div>
+                    
+                    <!-- 下著選項 -->
+                    <div id="bottoms-options" class="clothing-grid" style="display: none;">
+                        <!-- 動態生成 -->
+                    </div>
+                    
+                    <button id="generate-btn" class="generate-btn">🤖 AI 生成搭配</button>
+                    
+                    <!-- 實用提示 -->
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(15, 23, 42, 0.6); border-radius: 0.5rem; border: 1px solid rgba(79, 70, 229, 0.3);">
+                        <h4 style="color: #60A5FA; font-size: 0.9rem; margin-bottom: 0.5rem;">💡 搭配建議</h4>
+                        <div style="color: #94A3B8; font-size: 0.8rem;">
+                            <div style="margin-bottom: 0.3rem;">• 正式場合：西裝外套 + 西裝褲/及膝裙</div>
+                            <div style="margin-bottom: 0.3rem;">• 商務場合：襯衫 + 西裝褲/斜紋褲</div>
+                            <div style="margin-bottom: 0.3rem;">• 輕鬆場合：針織衫 + 牛仔褲/寬褲</div>
+                            <div>• 避免：過於鮮豔或過於休閒的組合</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 右側結果區 -->
+                <div class="ai-result">
+                    <div id="selection-display" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; width: 100%;">
+                        <div id="top-selection" style="background: rgba(51, 65, 85, 0.3); border-radius: 0.5rem; padding: 1rem; text-align: center; color: #94A3B8; min-height: 100px; display: flex; align-items: center; justify-content: center;">
+                            已選上衣
+                        </div>
+                        <div id="bottom-selection" style="background: rgba(51, 65, 85, 0.3); border-radius: 0.5rem; padding: 1rem; text-align: center; color: #94A3B8; min-height: 100px; display: flex; align-items: center; justify-content: center;">
+                            已選下著
+                        </div>
+                    </div>
+                    <div id="result-area" style="flex: 1; background: rgba(51, 65, 85, 0.3); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; color: #94A3B8; min-height: 200px;">
+                        AI 生成結果將顯示於此
+                    </div>
+                    
+                    <!-- API Key 說明 -->
+                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 0.5rem;">
+                        <div style="display: flex; align-items: start;">
+                            <div style="color: #FBBF24; font-size: 1.2rem; margin-right: 0.5rem; margin-top: 0.1rem;">🔑</div>
+                            <div>
+                                <h4 style="color: #FBBF24; font-size: 0.9rem; font-weight: bold; margin-bottom: 0.3rem;">API Key 設定</h4>
+                                <p style="color: #FDE68A; font-size: 0.8rem; margin-bottom: 0.5rem;">使用 Google Gemini Imagen 3.0 API，需要有效的 API Key</p>
+                                <div style="color: #FEF3C7; font-size: 0.7rem;">
+                                    <div style="margin-bottom: 0.2rem;">• 可至 <a href="https://makersuite.google.com/app/apikey" target="_blank" style="text-decoration: underline;">Google AI Studio</a> 申請</div>
+                                    <div>• 目前使用測試用 Key，僅供演示</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 17: AI說明 -->
+    <div class="slide" data-slide="17">
+        <div class="slide-header">
+            <div class="slide-number">17 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">AI功能說明</div>
+        </div>
+        <div class="slide-content">
+            <h2 class="slide-title">AI穿搭生成功能</h2>
+            <p class="slide-subtitle">如何使用 AI 打造專屬造型</p>
+            
+            <!-- 功能特色 -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; width: 100%; margin-top: 2rem;">
+                <div class="stat-card">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⚙️</div>
+                    <h3 style="font-size: 1.3rem; margin-bottom: 1rem;">智能參數設定</h3>
+                    <p style="color: #94A3B8;">選擇性別、身高、體重等基本資訊，AI會根據BMI自動計算並調整體型描述，確保生成的造型符合實際需求</p>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">👔</div>
+                    <h3 style="font-size: 1.3rem; margin-bottom: 1rem;">專業服裝庫</h3>
+                    <p style="color: #94A3B8;">精選16件專業主持人服飾，包含8件上衣與8件下著，每件都有精心設計的英文描述，確保AI理解準確</p>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🤖</div>
+                    <h3 style="font-size: 1.3rem; margin-bottom: 1rem;">Gemini AI生成</h3>
+                    <p style="color: #94A3B8;">使用Google Gemini Imagen 3.0生成8K高畫質專業主持人形象，真實度極高，可直接用於穿搭參考</p>
+                </div>
+            </div>
+            
+            <!-- 使用指南 -->
+            <div style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                <div style="background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(79, 70, 229, 0.3); border-radius: 1rem; padding: 1.5rem;">
+                    <h4 style="color: #60A5FA; font-size: 1.1rem; margin-bottom: 1rem;">📋 操作步驟</h4>
+                    <div style="color: #94A3B8; font-size: 0.9rem; space-y: 0.5rem;">
+                        <div style="margin-bottom: 0.5rem;">1. 設定模特兒基本參數</div>
+                        <div style="margin-bottom: 0.5rem;">2. 選擇上衣與下著組合</div>
+                        <div style="margin-bottom: 0.5rem;">3. 點擊生成按鈕</div>
+                        <div>4. 等待10-30秒生成完成</div>
+                    </div>
+                </div>
+                <div style="background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(79, 70, 229, 0.3); border-radius: 1rem; padding: 1.5rem;">
+                    <h4 style="color: #60A5FA; font-size: 1.1rem; margin-bottom: 1rem;">💡 使用技巧</h4>
+                    <div style="color: #94A3B8; font-size: 0.9rem; space-y: 0.5rem;">
+                        <div style="margin-bottom: 0.5rem;">• 使用真實身高體重數據</div>
+                        <div style="margin-bottom: 0.5rem;">• 選擇適合場合的服飾</div>
+                        <div style="margin-bottom: 0.5rem;">• 避免過於休閒的組合</div>
+                        <div>• 生成的圖片僅供參考</div>
+                    </div>
+                </div>
+                <div style="background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(79, 70, 229, 0.3); border-radius: 1rem; padding: 1.5rem;">
+                    <h4 style="color: #60A5FA; font-size: 1.1rem; margin-bottom: 1rem;">🔑 API設定</h4>
+                    <div style="color: #94A3B8; font-size: 0.9rem; space-y: 0.5rem;">
+                        <div style="margin-bottom: 0.5rem;">• 需要Gemini API Key</div>
+                        <div style="margin-bottom: 0.5rem;">• 可至Google AI Studio申請</div>
+                        <div style="margin-bottom: 0.5rem;">• 目前使用測試Key</div>
+                        <div>• 請勿分享含有Key的檔案</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 重要提示 -->
+            <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(79, 70, 229, 0.1); border-radius: 1rem; border: 2px solid #4F46E5;">
+                <p style="font-size: 1.1rem; color: #A78BFA; text-align: center;">
+                    🎯 <strong>重要提示：</strong>上一頁的AI功能完全可用，可直接體驗！<br>
+                    使用 Gemini Imagen 3.0 生成高品質主持人形象，每次生成約需10-30秒
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 投影片 18: 總結 -->
+    <div class="slide" data-slide="18">
+        <div class="slide-header">
+            <div class="slide-number">18 / 18</div>
+            <div style="color: #94A3B8; font-weight: 600;">總結</div>
+        </div>
+        <div class="slide-content">
+            <h2 class="slide-title">你的形象，<br>就是你無聲的開場白</h2>
+            <p class="slide-subtitle">從今天起，讓你的每一次登場都為你加分</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; width: 100%; margin-top: 3rem;">
+                <div style="text-align: center; padding: 1.5rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⏰</div>
+                    <h4 style="font-size: 1.2rem; color: #60A5FA; margin-bottom: 0.5rem;">7秒定律</h4>
+                    <p style="color: #94A3B8;">第一印象決定專業度</p>
+                </div>
+                <div style="text-align: center; padding: 1.5rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">👁️</div>
+                    <h4 style="font-size: 1.2rem; color: #60A5FA; margin-bottom: 0.5rem;">視覺55%</h4>
+                    <p style="color: #94A3B8;">外表是溝通的主要要素</p>
+                </div>
+                <div style="text-align: center; padding: 1.5rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">✨</div>
+                    <h4 style="font-size: 1.2rem; color: #60A5FA; margin-bottom: 0.5rem;">避開禁區</h4>
+                    <p style="color: #94A3B8;">太隨性、太浮誇、不合身</p>
+                </div>
+                <div style="text-align: center; padding: 1.5rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                    <h4 style="font-size: 1.2rem; color: #60A5FA; margin-bottom: 0.5rem;">三大關鍵</h4>
+                    <p style="color: #94A3B8;">場合、身形、風格</p>
+                </div>
+            </div>
+            
+            <!-- 行動指南 -->
+            <div style="margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                <div style="background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(79, 70, 229, 0.3); border-radius: 1rem; padding: 1.5rem; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🔍</div>
+                    <h4 style="color: #60A5FA; font-size: 1rem; margin-bottom: 0.5rem;">自我檢視</h4>
+                    <p style="color: #94A3B8; font-size: 0.8rem;">檢查你的主持穿搭是否符合專業標準</p>
+                </div>
+                <div style="background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(79, 70, 229, 0.3); border-radius: 1rem; padding: 1.5rem; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🤖</div>
+                    <h4 style="color: #60A5FA; font-size: 1rem; margin-bottom: 0.5rem;">嘗試AI</h4>
+                    <p style="color: #94A3B8; font-size: 0.8rem;">使用AI功能生成適合你的專業造型</p>
+                </div>
+                <div style="background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(79, 70, 229, 0.3); border-radius: 1rem; padding: 1.5rem; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">📚</div>
+                    <h4 style="color: #60A5FA; font-size: 1rem; margin-bottom: 0.5rem;">持續學習</h4>
+                    <p style="color: #94A3B8; font-size: 0.8rem;">關注時尚趨勢，提升形象管理能力</p>
+                </div>
+                <div style="background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(79, 70, 229, 0.3); border-radius: 1rem; padding: 1.5rem; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🚀</div>
+                    <h4 style="color: #60A5FA; font-size: 1rem; margin-bottom: 0.5rem;">實踐應用</h4>
+                    <p style="color: #94A3B8; font-size: 0.8rem;">將所學應用到實際主持工作中</p>
+                </div>
+            </div>
+            
+            <!-- 最終呼籲 -->
+            <div style="margin-top: 3rem; padding: 2rem; background: rgba(79, 70, 229, 0.1); border-radius: 1.5rem; border: 2px solid #4F46E5;">
+                <p style="font-size: 1.3rem; color: #A78BFA; text-align: center; font-weight: bold;">
+                    🎉 記住：專業的形象不是天生的，而是精心打造的結果！
+                </p>
+                <p style="font-size: 1rem; color: #94A3B8; text-align: center; margin-top: 1rem;">
+                    從今天開始，讓每一次登場都成為你的加分時刻
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 導航控制 -->
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" title="上一頁 (←)">◀</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)" title="下一頁 (→)">▶</button>
+        <button class="nav-btn" onclick="toggleAutoplay()" id="autoplayBtn" title="自動播放">⏯</button>
+    </div>
+
+    <!-- 鍵盤提示 -->
+    <div class="keyboard-hint">
+        ← → 切換投影片 | ESC 停止自動播放
+    </div>
+
+    <!-- 圖片放大Modal -->
+    <div id="image-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <img id="modal-image" src="" alt="放大圖片" class="modal-image">
+            <div id="modal-description" style="margin-top: 1rem; color: #94A3B8; text-align: center;"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 18;
+        let autoplayInterval;
+        let isAutoplay = false;
+
+        // 服裝數據
+        const clothingData = {
+            tops: [
+                { name: '白色正裝襯衫', prompt: 'a crisp white dress shirt', img: 'images/ai-top-white-shirt.jpg' },
+                { name: '黑色絲質女衫', prompt: 'a black silk blouse', img: 'images/ai-top-black-blouse.jpg' },
+                { name: '深藍西裝外套', prompt: 'a navy blazer', img: 'images/ai-top-navy-blazer.jpg' },
+                { name: '米色針織衫', prompt: 'a beige knit sweater', img: 'images/ai-top-beige-knit.jpg' },
+                { name: '灰色Polo衫', prompt: 'a gray polo shirt', img: 'images/ai-top-gray-polo.jpg' },
+                { name: '條紋棉質T恤', prompt: 'a striped cotton t-shirt', img: 'images/ai-top-striped-tshirt.jpg' },
+                { name: '立領雪紡上衣', prompt: 'a stand collar chiffon top', img: 'images/ai-top-chiffon-top.jpg' },
+                { name: '淺灰開襟衫', prompt: 'a light gray cardigan', img: 'images/ai-top-gray-cardigan.jpg' }
+            ],
+            bottoms: [
+                { name: '黑色西裝褲', prompt: 'black trousers', img: 'images/ai-bottom-black-trousers.jpg' },
+                { name: '深藍及膝裙', prompt: 'a navy knee-length skirt', img: 'images/ai-bottom-navy-skirt.jpg' },
+                { name: '卡其色斜紋褲', prompt: 'khaki chinos', img: 'images/ai-bottom-khaki-chinos.jpg' },
+                { name: '白色寬褲', prompt: 'white wide-leg pants', img: 'images/ai-bottom-white-pants.jpg' },
+                { name: '灰色格紋褲', prompt: 'gray plaid trousers', img: 'images/ai-bottom-gray-plaid-trousers.jpg' },
+                { name: '深色牛仔褲', prompt: 'dark wash skinny jeans', img: 'images/ai-bottom-dark-jeans.jpg' },
+                { name: '米色A字裙', prompt: 'a beige A-line skirt', img: 'images/ai-bottom-beige-a-line-skirt.jpg' },
+                { name: '酒紅窄裙', prompt: 'a burgundy pencil skirt', img: 'images/ai-bottom-burgundy-pencil-skirt.jpg' }
+            ]
+        };
+
+        let selectedTop = null;
+        let selectedBottom = null;
+
+        // 初始化指示器
+        function initIndicators() {
+            const indicator = document.getElementById('slideIndicator');
+            for (let i = 1; i <= totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'indicator-dot';
+                if (i === 1) dot.classList.add('active');
+                dot.onclick = () => goToSlide(i);
+                indicator.appendChild(dot);
+            }
+        }
+
+        // 顯示指定投影片
+        function goToSlide(n) {
+            document.querySelectorAll('.slide').forEach(slide => slide.classList.remove('active'));
+            document.querySelectorAll('.indicator-dot').forEach(dot => dot.classList.remove('active'));
+            
+            document.querySelector(`[data-slide="${n}"]`).classList.add('active');
+            document.querySelectorAll('.indicator-dot')[n-1].classList.add('active');
+            
+            currentSlide = n;
+            updateNavButtons();
+        }
+
+        // 切換投影片
+        function changeSlide(direction) {
+            const newSlide = currentSlide + direction;
+            if (newSlide >= 1 && newSlide <= totalSlides) {
+                goToSlide(newSlide);
+            }
+        }
+
+        // 更新導航按鈕狀態
+        function updateNavButtons() {
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+        }
+
+        // 自動播放功能
+        function toggleAutoplay() {
+            const btn = document.getElementById('autoplayBtn');
+            if (isAutoplay) {
+                clearInterval(autoplayInterval);
+                btn.textContent = '⏯';
+                btn.title = '自動播放';
+                isAutoplay = false;
+            } else {
+                autoplayInterval = setInterval(() => {
+                    if (currentSlide < totalSlides) {
+                        changeSlide(1);
+                    } else {
+                        goToSlide(1); // 回到第一頁
+                    }
+                }, 5000);
+                btn.textContent = '⏸';
+                btn.title = '停止播放';
+                isAutoplay = true;
+            }
+        }
+
+
+
+        // 阻止自動播放在用戶互動時繼續
+        document.addEventListener('click', (e) => {
+            // 如果點擊的是導航按鈕或AI控制元素，不停止自動播放
+            if (e.target.closest('.navigation') || e.target.closest('.ai-controls') || e.target.closest('.modal')) {
+                return;
+            }
+            if (isAutoplay) {
+                clearInterval(autoplayInterval);
+                const btn = document.getElementById('autoplayBtn');
+                btn.textContent = '⏯';
+                btn.title = '自動播放';
+                isAutoplay = false;
+            }
+        });
+
+        // 圖片放大功能
+        function openModal(imageSrc, description = '') {
+            const modal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalDesc = document.getElementById('modal-description');
+            
+            modalImage.src = imageSrc;
+            modalDesc.textContent = description;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('image-modal').classList.remove('active');
+        }
+
+        // 綁定所有可放大圖片的點擊事件
+        document.addEventListener('DOMContentLoaded', () => {
+            initIndicators();
+            updateNavButtons();
+            initClothingOptions();
+            
+            // 綁定圖片放大事件
+            document.querySelectorAll('.zoomable').forEach(img => {
+                img.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openModal(img.src, img.alt);
+                });
+            });
+        });
+
+        // Modal點擊背景關閉
+        document.getElementById('image-modal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                closeModal();
+            }
+        });
+
+        // 鍵盤控制（統一處理）
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'Escape') {
+                closeModal();
+                if (isAutoplay) toggleAutoplay();
+            }
+        });
+
+        // AI功能初始化
+        function initClothingOptions() {
+            const topsContainer = document.getElementById('tops-options');
+            const bottomsContainer = document.getElementById('bottoms-options');
+            
+            if (!topsContainer || !bottomsContainer) return; // 如果不在AI頁面就跳過
+            
+            // 生成上衣選項
+            clothingData.tops.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'clothing-item';
+                div.dataset.type = 'top';
+                div.dataset.index = index;
+                div.innerHTML = `
+                    <img src="${item.img}" alt="${item.name}" style="width: 100%; height: 60px; object-fit: cover; border-radius: 0.25rem; margin-bottom: 0.5rem;">
+                    <div style="font-size: 0.75rem; color: #94A3B8;">${item.name}</div>
+                `;
+                topsContainer.appendChild(div);
+            });
+
+            // 生成下著選項
+            clothingData.bottoms.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'clothing-item';
+                div.dataset.type = 'bottom';
+                div.dataset.index = index;
+                div.innerHTML = `
+                    <img src="${item.img}" alt="${item.name}" style="width: 100%; height: 60px; object-fit: cover; border-radius: 0.25rem; margin-bottom: 0.5rem;">
+                    <div style="font-size: 0.75rem; color: #94A3B8;">${item.name}</div>
+                `;
+                bottomsContainer.appendChild(div);
+            });
+
+            // 綁定切換按鈕事件
+            const topsToggle = document.getElementById('tops-toggle');
+            const bottomsToggle = document.getElementById('bottoms-toggle');
+            
+            if (topsToggle && bottomsToggle) {
+                topsToggle.addEventListener('click', () => {
+                    topsToggle.classList.add('active');
+                    bottomsToggle.classList.remove('active');
+                    topsContainer.style.display = 'grid';
+                    bottomsContainer.style.display = 'none';
+                });
+
+                bottomsToggle.addEventListener('click', () => {
+                    bottomsToggle.classList.add('active');
+                    topsToggle.classList.remove('active');
+                    bottomsContainer.style.display = 'grid';
+                    topsContainer.style.display = 'none';
+                });
+            }
+
+            // 綁定服裝選擇事件
+            document.addEventListener('click', (e) => {
+                const clothingItem = e.target.closest('.clothing-item');
+                if (!clothingItem) return;
+
+                const type = clothingItem.dataset.type;
+                const index = parseInt(clothingItem.dataset.index);
+                
+                // 移除同類型其他選中狀態
+                document.querySelectorAll(`.clothing-item[data-type="${type}"]`).forEach(item => {
+                    item.classList.remove('selected');
+                });
+                
+                // 添加選中狀態
+                clothingItem.classList.add('selected');
+                
+                // 更新選中項目
+                if (type === 'top') {
+                    selectedTop = clothingData.tops[index];
+                    updateSelectionDisplay('top-selection', selectedTop);
+                } else {
+                    selectedBottom = clothingData.bottoms[index];
+                    updateSelectionDisplay('bottom-selection', selectedBottom);
+                }
+            });
+
+            // 綁定生成按鈕事件
+            const generateBtn = document.getElementById('generate-btn');
+            if (generateBtn) {
+                generateBtn.addEventListener('click', generateOutfit);
+            }
+        }
+
+        function updateSelectionDisplay(containerId, item) {
+            const container = document.getElementById(containerId);
+            if (!container || !item) return;
+            
+            container.innerHTML = `
+                <img src="${item.img}" alt="${item.name}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                <div style="font-size: 0.875rem; color: #F1F5F9; font-weight: 600;">${item.name}</div>
+            `;
+            container.style.display = 'flex';
+            container.style.flexDirection = 'column';
+            container.style.alignItems = 'center';
+            container.style.justifyContent = 'center';
+            container.style.color = '#F1F5F9';
+        }
+
+        function generateOutfit() {
+            if (!selectedTop || !selectedBottom) {
+                alert('請先選擇上衣和下著！');
+                return;
+            }
+
+            const resultArea = document.getElementById('result-area');
+            if (!resultArea) return;
+
+            // 顯示載入狀態
+            resultArea.innerHTML = `
+                <div class="loader"></div>
+                <div style="margin-top: 1rem; color: #94A3B8;">AI 正在生成圖片，請稍候...</div>
+            `;
+
+            // 構建提示詞
+            const gender = document.getElementById('gender-select')?.value || 'female';
+            const height = document.getElementById('height-input')?.value || 170;
+            const weight = document.getElementById('weight-input')?.value || 60;
+
+            const prompt = buildPrompt(gender, height, weight, selectedTop.prompt, selectedBottom.prompt);
+            
+            // 使用 Gemini API 生成圖片
+            generateImageWithGemini(prompt, resultArea);
+        }
+
+        async function generateImageWithGemini(prompt, resultArea) {
+            // --- API Key 設定 ---
+            // 請將您的 Gemini API Key 填入下方
+            const apiKey = "AIzaSyDH9bBvjEigz5vFJiLzpcuSx9p3FYidSxY"; 
+            // --- API Key 設定 ---
+            
+            if (!apiKey) {
+                resultArea.innerHTML = `
+                    <div style="text-align: center; color: #EF4444;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">⚠️</div>
+                        <p style="margin-bottom: 1rem;">API Key 未設定</p>
+                        <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 0.5rem; font-size: 0.875rem;">
+                            <strong>請在程式碼中設定您的 Gemini API Key：</strong><br>
+                            1. 前往 <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: #60A5FA;">Google AI Studio</a><br>
+                            2. 創建新的 API Key<br>
+                            3. 將 Key 填入程式碼第 1420 行的 apiKey 變數
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const payload = { 
+                instances: [{ prompt }], 
+                parameters: { "sampleCount": 1 } 
+            };
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP 錯誤! 狀態碼: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.predictions && result.predictions[0]?.bytesBase64Encoded) {
+                    const imageUrl = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+                    resultArea.innerHTML = `
+                        <div style="text-align: center;">
+                            <img src="${imageUrl}" alt="AI 生成的穿搭" style="max-width: 100%; max-height: 300px; border-radius: 0.5rem; margin-bottom: 1rem;">
+                            <div style="background: rgba(79, 70, 229, 0.1); padding: 1rem; border-radius: 0.5rem; font-size: 0.875rem; color: #94A3B8;">
+                                <strong>生成提示詞：</strong><br>
+                                ${prompt.substring(0, 150)}...
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    console.error("API 回應格式不符:", result);
+                    throw new Error("AI 未能成功生成圖片，請檢查 API Key 或查看控制台錯誤訊息。");
+                }
+            } catch (error) {
+                console.error('圖片生成失敗:', error);
+                resultArea.innerHTML = `
+                    <div style="text-align: center; color: #EF4444;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">❌</div>
+                        <p style="margin-bottom: 1rem;">圖片生成失敗</p>
+                        <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 0.5rem; font-size: 0.875rem;">
+                            <strong>錯誤訊息：</strong><br>
+                            ${error.message}
+                        </div>
+                        <div style="margin-top: 1rem; font-size: 0.875rem; color: #94A3B8;">
+                            <strong>常見問題：</strong><br>
+                            • API Key 是否正確？<br>
+                            • 是否已啟用 Gemini API？<br>
+                            • 網路連線是否正常？
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function buildPrompt(gender, height, weight, topPrompt, bottomPrompt) {
+            let bodyType = '';
+            if (height && weight) {
+                const bmi = weight / ((height / 100) ** 2);
+                if (bmi < 18.5) bodyType = 'a slim build';
+                else if (bmi >= 18.5 && bmi < 24) bodyType = 'an average build';
+                else if (bmi >= 24 && bmi < 28) bodyType = 'a slightly overweight build';
+                else bodyType = 'a plus-size build';
+            }
+            const genderText = gender === 'male' ? 'man' : 'woman';
+            const age = 'in their late 20s';
+            return `Full body portrait of a professional Taiwanese event host, a ${genderText} ${age} with ${bodyType}, standing confidently on a minimalist stage with soft, blurred background lights. The host is wearing ${topPrompt} and ${bottomPrompt}. Style: ultra realistic photo, 8k, sharp focus, professional studio lighting, high detail.`.replace(/\s+/g, ' ').trim();
+        }
+    </script>
+</body>
+</html>
